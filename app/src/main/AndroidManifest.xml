@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.trending.TrendingActivity" />
+        <activity android:name=".ui.trending.TrendingActivity" android:configChanges="orientation"/>
     </application>
 
 </manifest>

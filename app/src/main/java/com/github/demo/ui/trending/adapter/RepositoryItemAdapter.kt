@@ -1,4 +1,4 @@
-package com.github.demo.ui.trending
+package com.github.demo.ui.trending.adapter
 
 import android.graphics.Typeface
 import android.text.Spannable
@@ -14,12 +14,14 @@ import com.bumptech.glide.Glide
 import com.github.demo.R
 import com.github.demo.model.Repo
 import kotlinx.android.synthetic.main.lay_item_trending_repository.view.*
+import java.util.*
 
 class RepositoryItemAdapter : RecyclerView.Adapter<RepositoryItemAdapter.RepositoryItemHolder>(),
     Filterable {
     private var alData = ArrayList<Repo>()
     private val alTemp = ArrayList<Repo>()
     var search: String? = null
+    var onItemClick: ((item: Repo) -> Unit)? = null
 
     class RepositoryItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
@@ -46,15 +48,25 @@ class RepositoryItemAdapter : RecyclerView.Adapter<RepositoryItemAdapter.Reposit
         holder.itemView.tvName.text = name
         holder.itemView.tvDescription.text = item.description
         holder.itemView.tvLanguage.text = item.language
+        holder.itemView.panelClick.setOnClickListener {
+            onItemClick?.invoke(item)
+        }
     }
 
     override fun getItemCount(): Int {
         return alData.size
     }
 
-    fun addData(data: ArrayList<Repo>) {
-        alData.addAll(data)
-        alTemp.addAll(data)
+    fun addData(data: Hashtable<Long, Repo>) {
+        alData.clear()
+        alTemp.clear()
+        data.keys.forEach {
+            data[it]?.let { item ->
+                alData.add(item)
+                alTemp.add(item)
+            }
+        }
+
         notifyDataSetChanged()
     }
 
@@ -87,8 +99,8 @@ class RepositoryItemAdapter : RecyclerView.Adapter<RepositoryItemAdapter.Reposit
         }
 
         override fun publishResults(char: CharSequence?, p1: FilterResults?) {
-            p1?.let {
-                alData = it.values as ArrayList<Repo>
+            p1?.values?.let {
+                alData = it as ArrayList<Repo>
                 notifyDataSetChanged()
             }
         }

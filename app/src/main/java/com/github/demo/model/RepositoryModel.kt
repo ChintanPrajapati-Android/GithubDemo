@@ -3,6 +3,7 @@ package com.github.demo.model
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
+import java.io.Serializable
 
 data class RepositoryModel(
 
@@ -16,7 +17,7 @@ data class RepositoryModel(
 )
 
 
-@Parcelize
+
 data class Repo(
 
     @SerializedName("id")
@@ -58,12 +59,11 @@ data class Repo(
     @SerializedName("open_issues")
     val openIssues: Int
 
-) : Parcelable
+) : Serializable
 
 
-@Parcelize
 data class Owner(
     val id: Int,
     val login: String,
     val avatar_url: String
-) : Parcelable
+) : Serializable

@@ -19,5 +19,10 @@
     <string name="invalid_request">Invalid request</string>
 
     <string name="offline">Offline</string>
+    <string name="language">Language</string>
+    <string name="description">Description</string>
+    <string name="created_date">Created Date</string>
+    <string name="last_update_on">Last Update On</string>
+    <string name="open_issues">Open Issues</string>
 
 </resources>
