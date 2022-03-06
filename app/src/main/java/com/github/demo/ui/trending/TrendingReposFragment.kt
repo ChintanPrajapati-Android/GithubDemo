@@ -1,5 +1,6 @@
 package com.github.demo.ui.trending
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -17,6 +18,8 @@ import com.github.demo.extra.FragmentTag
 import com.github.demo.ui.trending.adapter.RepositoryItemAdapter
 import com.github.demo.viewmodel.DataViewModel
 import kotlinx.android.synthetic.main.fragment_trending_repos.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class TrendingReposFragment : BaseFragment() {
 
@@ -39,7 +42,14 @@ class TrendingReposFragment : BaseFragment() {
 
     override fun getContentLayoutResId(): Int = R.layout.fragment_trending_repos
 
+    @SuppressLint("SimpleDateFormat")
     override fun populateUI(rootView: View, savedInstanceState: Bundle?) {
+
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DAY_OF_YEAR, -1)
+
+        val query =
+            "created:>".plus(SimpleDateFormat("yyyy-MM-dd").format(calendar.timeInMillis))
 
         val adData = RepositoryItemAdapter()
         val manager = LinearLayoutManager(mBaseContext)
@@ -56,7 +66,7 @@ class TrendingReposFragment : BaseFragment() {
         }
 
         if (dataViewModel?.htSaveData?.isEmpty == true) {
-            dataViewModel?.getTrendingRepositories("language", dataViewModel?.pageIndex ?: 1, 50)
+            dataViewModel?.getTrendingRepositories(query, dataViewModel?.pageIndex ?: 1, 50)
                 .apply {
                     pbData.visibility = View.VISIBLE
                 }
@@ -95,7 +105,7 @@ class TrendingReposFragment : BaseFragment() {
                 if (searchView.query.isNullOrEmpty()) {
                     if (manager.findLastVisibleItemPosition() == adData.itemCount - 1) {
                         dataViewModel?.getTrendingRepositories(
-                            "language",
+                            query,
                             dataViewModel?.pageIndex ?: 1,
                             50
                         ).apply {

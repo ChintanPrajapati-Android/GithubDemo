@@ -11,6 +11,8 @@ interface ApiService {
     suspend fun getTrendingRepositories(
         @Query("q") query: String,
         @Query("page") page: Int,
-        @Query("per_page") itemsPerPage: Int
+        @Query("per_page") itemsPerPage: Int,
+        @Query("sort") sort: String = "stars",
+        @Query("order") order: String = "desc"
     ): Response<RepositoryModel>
 }
